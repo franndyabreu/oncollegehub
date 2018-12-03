@@ -1,0 +1,85 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+    <div class="content-section">
+        <div class="media">
+            <img class="rounded-circle account-img" src="{{ user_object.profile.image.url }}">
+            <div class="media-body">
+                <form method="POST" class="float-right">
+                    {% csrf_token %}
+                    <!-- If the user is not the user in profile  -->
+                    {% if not user.profile  == user_object.profile %}
+                        {% if user.profile in followers %}
+                            <button class="btn btn-primary" value="unfollow" name="unfollow">Unfollow</button>
+                        {% else %}
+                            <h4></h4>
+                            <button class="btn btn-sm btn-primary" value="follow" name="follow">Follow</button>
+                        {% endif %}
+                    {% endif %}
+                </form>
+                <h4>{{ user_object.username }}</h4>
+
+                <div class="container media col-sm-4 mt-5 ">
+                    <a href="{% url 'profile-followers' user_object.id user_object.username %}"
+                       style="text-decoration: none">
+                        <p class="text-secondary mr-4">Followers
+                            {{ followers|length }} </p>
+                        <a style="text-decoration: none"
+                           href="{% url 'profile-following' user_object.id user_object.username %}"><p
+                                class="text-secondary mr-4">Following
+                            {{ following|length }} </p></a>
+
+                </div>
+
+            </div>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                {% if user_object.profile.user == user %}
+                    <div>
+                        <a href="{% url 'profile-update' user_object.id user_object.username %}">Edit Profile</a>
+                        <div class="form-group">
+                        </div>
+                    </div>
+                {% endif %}
+                <legend class="border-bottom mb-4">Profile info:</legend>
+                <div class="media-body">
+                    <h4>Email</h4>
+                    <h6 class="text-secondary">{{ user_object.email }}</h6>
+                    <h4>College</h4>
+                    <h6 class="text-secondary">{{ user_object.college.name }}</h6>
+                    <h4>Bio</h4>
+
+                </div>
+                {{ form|crispy }}
+                {{ p_form }}  <!-- Profile Form -->
+            </fieldset>
+
+            <!-- Only when editing update will appear -->
+            {% if p_form %}
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Update</button>
+                </div>
+            {% endif %}
+
+        </form>
+    </div>
+    {% if relevant_post %}
+        <h2 class="text-muted account-heading"> Most relevant post</h2>
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a href="{% url 'post-detail' relevant_post.id relevant_post.title %}"><h2
+                            class="article-title">{{ relevant_post.title }}</h2></a>
+                    <small class="text-muted">{{ relevant_post.post_date|date:"N d, o" }}</small>
+                    <small class="text-muted float-right"> Rating: {{ relevant_post.rating }}</small>
+                </div>
+                <p class="article-content">{{ relevant_post.content }}</p>
+            </div>
+        </article>
+
+    {% endif %}
+
+{% endblock content %}

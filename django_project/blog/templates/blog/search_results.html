@@ -1,0 +1,30 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+    {% if list_result %}
+        <h5 class="ml-3">Search Results: </h5>
+        {% for result in list_result %}
+            <div class="container">
+                <article class="media content-section">
+                    <div class="media-body">
+                        <div class="article-metadata">
+                            <img class="rounded-circle article-img" src="{{ result.author.profile.image.url }} "/>
+                            <a class="mr-2"
+                               href="{% url 'profile' result.author.id result.author.username %}">{{ result.author }}</a>
+                            <small class="text-muted">{{ result.post_date|date:"N d, o" }}</small>
+                            <div class="float-right mt-1">
+                                <img style="width:40%" src="{% static 'blog/like.svg' %}" alt="Ratings">
+                                <small class="ml-2">{{ result.rating }}</small>
+                            </div>
+                            <h5><a class="article-title"
+                                   href="{% url 'post-detail' result.id result.title %}">{{ result.title }}</a></h5>
+                            <a href="{% url 'post-detail' result.id result.title %}">
+                                Click here for more details.
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

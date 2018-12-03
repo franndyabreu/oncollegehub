@@ -1,0 +1,2 @@
+django_uuid_primary_key
+uuid_primary_key

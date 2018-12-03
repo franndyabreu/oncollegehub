@@ -1,0 +1,24 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% block content %}
+    {% if schools %}
+        <ul class="list-group">
+            <h5 class="list-group-item-heading list-group-item">Universities and Colleges:</h5>
+
+            {% for school in schools %}
+
+                <div class="list-group-item float-right">
+                    <a href="{% url 'blog-college' school.id school.name %} "><h5 class="ml-2">{{ school.name }}</h5>
+                    </a>
+                    <small class="list-group-item">
+                        {{ school.address }}
+                    </small>
+                </div>
+
+
+            {% endfor %}
+            {% else %}
+            <h3>Schools not found</h3>
+        </ul>
+    {% endif %}
+{% endblock %}

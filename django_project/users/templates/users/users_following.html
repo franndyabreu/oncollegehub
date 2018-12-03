@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    <h4>Following: </h4>
+    <div class="list-group">
+        {% for following in following_list %}
+            <a href="{% url 'profile' following.user.id following.user.username %}"
+               class="list-group-item">{{ following.user.username }}</a>
+        {% endfor %}
+    </div>
+{% endblock %}

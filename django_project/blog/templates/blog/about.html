@@ -1,0 +1,10 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<h1> About page</h1>
+    {% if success is True %}
+        <div>Sucess</div>
+        {% else %}
+        <div>Unsuccess</div>
+    {% endif %}
+
+{% endblock content %}
