@@ -1,0 +1,130 @@
+{% load static %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
+    {% if title %}
+        <title>Project - {{ title }}</title>
+    {% else %}
+        <title>CollegeHub</title>
+    {% endif %}
+</head>
+<body>
+<header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a  class="navbar-brand mr-4" href="{% url 'blog-home' %}">
+            CollegeHub
+                {% comment %} <img src="{% static 'blog/Logo_page.png' %}" style="width:12%;padding-right: 20px;"> {% endcomment %}
+            </a>
+            <form action="{% url 'search_list' %}" class="align-middle w-50" type="GET" style="margin: 0">
+                <span class="fa fa-search form-control-feedback"></span>
+                <input type="text" class="form-control" name="q" placeholder="Search ..">
+            </form>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+                    aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarToggle">
+                <div class="navbar-nav mr-auto">
+                </div>
+                <!-- Navbar Right Side -->
+                <div class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <a class="nav-item nav-link" href="{% url 'schools' %}">Leaderboard</a>
+                        <div class="dropdown">
+                            <button style="background-color: #343A40; outline: transparent; color: #cbd5db;"
+                                    class="btn  dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="rounded-circle" src="{{ user.profile.image.url }}"
+                                     style="width: 30px"/> {{ user.username }}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{% url "profile" user.id user.username %}">Profile</a>
+                                <a class="dropdown-item" href="{% url 'profile-update' user.id user.username %}">Account
+                                    Settings</a>
+                                <a class="dropdown-item" href="{% url "logout" %}">Logout</a>
+                            </div>
+                        </div>
+
+                        {##}
+                        {#                            <h6 class="dropdown-item hidden">{{ user.username }}</h6>#}
+                        {#                        </div>#}
+                        {#                        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>#}
+                    {% else %}
+                        <a href="" class="nav-item nav-link">Ranking</a>
+                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </nav>
+</header>
+
+
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-md-8">
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == "error" %}
+                        <div class="alert alert-danger">
+                            {{ message }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            {% block content %}ß
+            {% endblock %}
+
+        </div>
+        {% block ranking %}
+            <div class="col-md-4">
+            <div class="content-section">
+                <h5>Top Colleges</h5>
+
+                {#                <form action="" method="GET">#}
+                {#                    <span class="fa fa-search form-control-feedback"></span>#}
+                {#                    <input type="text" class="form-control" name="f" placeholder="Search ..">#}
+                {#                    <br>#}
+                {#                                </form>#}
+
+                {% if  college_ranking %}
+                    <div class="ranking-content">
+                        {% for college in college_ranking %}
+                            <a href="{% url 'blog-college' college.id college.name %}">
+                                <li class="list-group-item list-group-item">{{ college.name }} <span
+                                        class="badge badge-dark">{{ college.question_set.all|length }}</span></li>
+
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <h6 class="text-muted">Ranking empty...</h6>
+                {% endif %}
+            </div>
+
+        {% endblock %}
+</main>
+<footer>
+
+    <h6 class="text-center">CollegeHub Q&A-2020 </h6>
+</footer>
+
+</body>
+</html>
