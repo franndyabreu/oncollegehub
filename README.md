@@ -1,2 +1,13 @@
-# oncollegehub
-Django Web Application ment to help college and university students in their daily student activities.
+# Make migrations and create super-user
+
+```code
+python3 manage.py makemigrations
+```
+
+```code
+python3 manage.py migrate
+```
+
+```code
+python3 manage.py createsuperuser
+```
