@@ -1,2 +1,2 @@
 # oncollegehub
-Web Application that helps college and university students in their daily student activities.
+A question and answer web app for professional and enthusiast programmers and university students.
