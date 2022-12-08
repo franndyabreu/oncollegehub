@@ -1,7 +1,7 @@
 Django==2.2.6
 gunicorn==19.9.0
 psycopg2-binary==2.8.3
-certifi==2018.10.15
+certifi==2022.12.7
 chardet==3.0.4
 dj-database-url==0.5.0
 django-bootstrap4==0.0.7
